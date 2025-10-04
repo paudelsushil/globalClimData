@@ -1,0 +1,14 @@
+Package: globalClimData
+Title: Package to Download and process Climate data based on global or country specific or bounding box.
+Version: 0.0.8
+Authors@R: 
+    person("Sushil", "Paudel", , "spaudel@clarku.edu", role = c("aut", "cre"))
+Description: This package helps to Download and process TerraClimate data based on global or country specific or bounding box. 
+                You can use TerraClimate and WorldClim data, and gridMET data as a source. 
+                The package provides functions to download climate data for various variables such as 
+                temperature, precipitation, and others, and process them for any analysis or modeling purpose. 
+                The package also provides functions to extract climate data for specific locations and time periods.
+License: `use_mit_license()`, `use_gpl3_license()` 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3

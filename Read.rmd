@@ -1,0 +1,8 @@
+```{r}
+
+
+
+git remote add origin 'https://github.com/paudelsushil/globalClimData.git'
+
+
+```
