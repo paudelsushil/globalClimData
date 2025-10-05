@@ -11,5 +11,5 @@
 /.Rbuildignore
 /doc/
 /Meta/
-data
-Kwabena_project.rmd
+data/
+.Kwabena_project.rmd
