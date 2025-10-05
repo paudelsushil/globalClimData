@@ -11,7 +11,7 @@
 #'     \item TerraClimate: must be >= 1958
 #'     \item GridMET: must be >= 1979
 #'   }
-#' @param variable Character string specifying the climate variable to download.
+#' @param variable Character vector specifying the climate variable(s) to download.
 #'   Available variables depend on the data source:
 #'   
 #'   \strong{TerraClimate variables:}
@@ -69,14 +69,20 @@
 #'                  variable = "tmmx",
 #'                  save_dir = "~/climate_data")
 #'   
-#'   # Download to current directory
-#'   globalClimData(source = "TerraClimate",
-#'                  years = 2022,
-#'                  variable = "tmax")
-#' 
 #'   # Download multiple variables for multiple years
-#'   getTerraClimate.data(years = c(2018, 2019, 2020), 
-#'                        variable = c("tmax", "tmin", "ppt"))
+#'   globalClimData(source = "TerraClimate",
+#'                  years = c(2018, 2019, 2020), 
+#'                  variable = c("tmax", "tmin", "ppt"))
+#'   
+#'   # Download all temperature-related variables from GridMET
+#'   globalClimData(source = "GridMET",
+#'                  years = 2020:2022,
+#'                  variable = c("tmmx", "tmmn", "rmax", "rmin"))
+#'   
+#'   # Download drought indicators from TerraClimate
+#'   globalClimData(source = "TerraClimate",
+#'                  years = 2015:2020,
+#'                  variable = c("def", "PDSI", "soil", "vpd"))
 #' }
 #'
 #' @seealso 
@@ -121,4 +127,3 @@ globalClimData <- function(source, years, variable, save_dir = NULL) {
   
   invisible(result)
 }
-
