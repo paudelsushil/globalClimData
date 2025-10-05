@@ -2,7 +2,18 @@
 
 
 
-git remote add origin 'https://github.com/paudelsushil/globalClimData.git'
+devtools::install_github("https://github.com/paudelsushil/globalClimData")
+
+library(globalClimData)
+
+?globalClimData
 
 
+```
+
+```{r}
+
+```
+```{r}
+usethis::use_news_md()
 ```
