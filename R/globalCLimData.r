@@ -73,6 +73,10 @@
 #'   globalClimData(source = "TerraClimate",
 #'                  years = 2022,
 #'                  variable = "tmax")
+#' 
+#'   # Download multiple variables for multiple years
+#'   getTerraClimate.data(years = c(2018, 2019, 2020), 
+#'                        variable = c("tmax", "tmin", "ppt"))
 #' }
 #'
 #' @seealso 

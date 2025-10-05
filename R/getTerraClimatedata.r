@@ -1,10 +1,10 @@
 #' Download TerraClimate Data
 #'
 #' Downloads climate variable data files from the Northwest Knowledge Network
-#' TerraClimate dataset for specified years.
+#' TerraClimate dataset for specified years and variables.
 #'
 #' @param years Numeric vector of years to download (must be >= 1958)
-#' @param variable Character string specifying the climate variable to download.
+#' @param variable Character vector specifying the climate variable(s) to download.
 #'   Available variables:
 #'   \itemize{
 #'     \item \code{aet} - Actual Evapotranspiration
@@ -35,9 +35,13 @@
 #'                        variable = "ppt", 
 #'                        save_dir = "~/climate_data")
 #'   
-#'   # Download maximum temperature for multiple years
+#'   # Download multiple variables for multiple years
 #'   getTerraClimate.data(years = c(2018, 2019, 2020), 
-#'                        variable = "tmax")
+#'                        variable = c("tmax", "tmin", "ppt"))
+#'   
+#'   # Download all drought-related variables
+#'   getTerraClimate.data(years = 2020, 
+#'                        variable = c("def", "PDSI", "soil", "swe"))
 #' }
 #'
 #' @export
@@ -57,16 +61,19 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
     stop("Years cannot be in the future", call. = FALSE)
   }
   
-  if (!is.character(variable) || length(variable) != 1) {
-    stop("'variable' must be a single character string", call. = FALSE)
+  if (!is.character(variable)) {
+    stop("'variable' must be a character vector", call. = FALSE)
   }
   
   # Valid TerraClimate variables
   valid_vars <- c("aet", "def", "pet", "ppt", "q", "soil", "srad", 
                   "swe", "tmax", "tmin", "vap", "ws", "vpd", "PDSI")
   
-  if (!variable %in% valid_vars) {
-    stop("'variable' must be one of: ", paste(valid_vars, collapse = ", "), 
+  # Check all variables are valid
+  invalid_vars <- setdiff(variable, valid_vars)
+  if (length(invalid_vars) > 0) {
+    stop("Invalid variable(s): ", paste(invalid_vars, collapse = ", "), 
+         "\nValid options: ", paste(valid_vars, collapse = ", "), 
          call. = FALSE)
   }
   
@@ -82,17 +89,36 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
   
   base_url <- "https://climate.northwestknowledge.net/TERRACLIMATE-DATA/"
   
-  # Track downloaded files
-  downloaded_files <- character(length(years))
+  # Create all combinations of years and variables
+  download_grid <- expand.grid(
+    year = years, 
+    variable = variable,
+    stringsAsFactors = FALSE
+  )
   
-  # Download files for each year
-  for (i in seq_along(years)) {
-    year <- years[i]
-    file_name <- paste0("TerraClimate_", variable, "_", year, ".nc")
+  total_files <- nrow(download_grid)
+  downloaded_files <- character(total_files)
+  
+  # Print download plan
+  message("\n", strrep("=", 60))
+  message("Download Plan:")
+  message("  Years: ", paste(range(years), collapse = " to "), 
+          " (", length(years), " year", ifelse(length(years) > 1, "s", ""), ")")
+  message("  Variables: ", paste(variable, collapse = ", "), 
+          " (", length(variable), " variable", ifelse(length(variable) > 1, "s", ""), ")")
+  message("  Total files: ", total_files)
+  message("  Destination: ", save_dir)
+  message(strrep("=", 60), "\n")
+  
+  # Download files for each combination
+  for (i in seq_len(total_files)) {
+    year <- download_grid$year[i]
+    var <- download_grid$variable[i]
+    file_name <- paste0("TerraClimate_", var, "_", year, ".nc")
     file_url <- paste0(base_url, file_name)
     dest_path <- file.path(save_dir, file_name)
     
-    message("Downloading: ", file_name, " (", i, "/", length(years), ")")
+    message("[", i, "/", total_files, "] Downloading: ", file_name)
     
     # Download with error handling
     tryCatch({
@@ -103,10 +129,12 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
         quiet = FALSE
       )
       downloaded_files[i] <- dest_path
-      message("  -> Saved to: ", dest_path)
+      message("  -> Success")
     }, error = function(e) {
-      warning("Failed to download ", file_name, ": ", e$message, call. = FALSE)
+      warning("Failed to download ", file_name, ": ", e$message, 
+              call. = FALSE, immediate. = TRUE)
       downloaded_files[i] <- NA_character_
+      message("  -> Failed")
     })
   }
   
@@ -114,14 +142,20 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
   n_success <- sum(!is.na(downloaded_files))
   n_failed <- sum(is.na(downloaded_files))
   
-  message("\n", strrep("=", 50))
+  message("\n", strrep("=", 60))
   message("Download Summary:")
   message("  Successfully downloaded: ", n_success, " file(s)")
   if (n_failed > 0) {
     message("  Failed downloads: ", n_failed, " file(s)")
+    failed_indices <- which(is.na(downloaded_files))
+    message("\n  Failed files:")
+    for (idx in failed_indices) {
+      message("    - TerraClimate_", download_grid$variable[idx], "_", 
+              download_grid$year[idx], ".nc")
+    }
   }
   message("  Location: ", save_dir)
-  message(strrep("=", 50))
+  message(strrep("=", 60))
   
   # Return paths invisibly
   invisible(downloaded_files[!is.na(downloaded_files)])

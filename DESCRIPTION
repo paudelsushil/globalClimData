@@ -1,6 +1,8 @@
 Package: globalClimData
 Title: Package to Download and process Climate data based on global or country specific or bounding box.
-Version: 0.0.8
+Version: 1.1.0
+Before: Version:  0.0.9
+After: Version: 1.1.0
 Authors@R: 
     person("Sushil", "Paudel", , "spaudel@clarku.edu", role = c("aut", "cre"))
 Description: This package helps to Download and process TerraClimate data based on global or country specific or bounding box. 
@@ -12,3 +14,17 @@ License: `use_mit_license()`, `use_gpl3_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Imports:
+    terra,
+    sf,
+    dplyr,
+    tidyr,
+    stringr,
+    utils,
+    httr,
+    curl,
+    ncdf4,
+    lubridate,
+    ggplot2
+Suggests:
+    testthat
