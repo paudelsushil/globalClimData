@@ -6,3 +6,8 @@
 .quarto
 .Ruserdata
 *.Rproj
+.data
+.Example.rmd
+inst/doc
+/doc/
+/Meta/

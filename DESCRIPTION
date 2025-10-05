@@ -1,8 +1,8 @@
 Package: globalClimData
 Title: Package to Download and process Climate data based on global or country specific or bounding box.
-Version: 1.1.0
-Before: Version:  0.0.9
-After: Version: 1.1.0
+Version: 2.0.0
+Before: Version:  1.1.9
+After: Version: 2.0.0
 Authors@R: 
     person("Sushil", "Paudel", , "spaudel@clarku.edu", role = c("aut", "cre"))
 Description: This package helps to Download and process TerraClimate data based on global or country specific or bounding box. 
@@ -25,6 +25,12 @@ Imports:
     curl,
     ncdf4,
     lubridate,
-    ggplot2
+    ggplot2,
+    rnaturalearth,
+    here,
+    devtools
 Suggests:
+    knitr,
+    rmarkdown,
     testthat
+VignetteBuilder: knitr

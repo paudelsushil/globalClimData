@@ -9,7 +9,7 @@ getTerraClimate.data(years, variable, save_dir = NULL)
 \arguments{
 \item{years}{Numeric vector of years to download (must be >= 1958)}
 
-\item{variable}{Character string specifying the climate variable to download.
+\item{variable}{Character vector specifying the climate variable(s) to download.
 Available variables:
 \itemize{
 \item \code{aet} - Actual Evapotranspiration
@@ -37,7 +37,7 @@ Prints download status messages.
 }
 \description{
 Downloads climate variable data files from the Northwest Knowledge Network
-TerraClimate dataset for specified years.
+TerraClimate dataset for specified years and variables.
 }
 \examples{
 \dontrun{
@@ -46,9 +46,13 @@ TerraClimate dataset for specified years.
                        variable = "ppt", 
                        save_dir = "~/climate_data")
   
-  # Download maximum temperature for multiple years
+  # Download multiple variables for multiple years
   getTerraClimate.data(years = c(2018, 2019, 2020), 
-                       variable = "tmax")
+                       variable = c("tmax", "tmin", "ppt"))
+  
+  # Download all drought-related variables
+  getTerraClimate.data(years = 2020, 
+                       variable = c("def", "PDSI", "soil", "swe"))
 }
 
 }

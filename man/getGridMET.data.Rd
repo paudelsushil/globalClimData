@@ -9,7 +9,7 @@ getGridMET.data(years, variable, save_dir = NULL)
 \arguments{
 \item{years}{Numeric vector of years to download (must be >= 1979)}
 
-\item{variable}{Character string specifying the climate variable to download.
+\item{variable}{Character vector specifying the climate variable(s) to download.
 Available variables:
 \itemize{
 \item \code{bi} - Burning Index (BI) - model-G
@@ -37,7 +37,7 @@ Prints download status messages.
 }
 \description{
 Downloads climate variable data files from the Northwest Knowledge Network
-GridMET dataset for specified years.
+GridMET dataset for specified years and variables.
 }
 \examples{
 \dontrun{
@@ -46,9 +46,13 @@ GridMET dataset for specified years.
                   variable = "pr", 
                   save_dir = "~/climate_data")
   
-  # Download maximum temperature for multiple years
+  # Download multiple variables for multiple years
   getGridMET.data(years = c(2018, 2019, 2020), 
-                  variable = "tmmx")
+                  variable = c("tmmx", "tmmn", "pr"))
+  
+  # Download all temperature and humidity variables
+  getGridMET.data(years = 2020, 
+                  variable = c("tmmx", "tmmn", "rmax", "rmin", "sph"))
 }
 
 }

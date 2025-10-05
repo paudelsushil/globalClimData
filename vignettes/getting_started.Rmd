@@ -1,0 +1,114 @@
+---
+title: "getting_started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting_started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(globalClimData)
+```
+
+```{r}
+devtools::install_github("https://github.com/paudelsushil/globalClimData")
+
+
+```
+
+# Download all the climate variables for the year 1990 to 2024
+```{r}
+globalClimData(source = "TerraClimate",
+               years = c(1990:1991),
+               variable = c("tmax", "tmin", "ppt"),
+                save_dir = here::here("data/terradownload")
+               )
+```
+
+# Crop Climate data for Massachusetts, USA
+
+```{r}
+tmax_filelist <- list.files(here::here("data/terradownload"), pattern = "tmax", full.names = TRUE)
+tmin_filelist <- list.files(here::here("data/terradownload"), pattern = "tmin", full.names = TRUE)
+ppt_filelist <- list.files(here::here("data/terradownload"), pattern = "ppt", full.names = TRUE)
+
+
+# Process all tmax files
+sapply(1:length(tmax_filelist), function(i) {
+  cropClimateData(file_path = tmax_filelist[i], 
+                  country = "United States of America",
+                  state = "Massachusetts",
+                  output_dir = here::here("data/cropped_data"))
+})
+
+# Process all tmin files
+sapply(1:length(tmin_filelist), function(i) {
+  cropClimateData(file_path = tmin_filelist[i], 
+                  country = "United States of America",
+                  state = "Massachusetts",
+                  output_dir = here::here("data/cropped_data"))
+})
+
+# Process all ppt files
+sapply(1:length(ppt_filelist), function(i) {
+  cropClimateData(file_path = ppt_filelist[i], 
+                  country = "United States of America",
+                  state = "Massachusetts",
+                  output_dir = here::here("data/cropped_data"))
+})
+
+```
+
+# Calculate Average Annual Temperature from tmax and tmin files
+
+```{r}
+
+ma_tmax <- list.files(here::here("data/cropped_data"), pattern = "tmax", full.names = TRUE)
+ma_tmin<- list.files(here::here("data/cropped_data"), pattern = "tmin", full.names = TRUE)
+
+
+
+ma_tmin
+
+# Process each year
+results <- list()
+for (i in seq_along(ma_tmax)) {
+  year <- gsub(".*_(\\d{4}).*", "\\1", basename(ma_tmax[i]))
+  
+  results[[year]] <- calcAnnualAvgTemp(
+    tmax_file = ma_tmax[i],
+    tmin_file = ma_tmin[i],
+    output_file = paste0("data/annual/avg_temp_", year, "_MA.nc")
+  )
+}
+```
+
+
+# Calculate Total Annual Precipitation from ppt files
+```{r}
+ma_ppt<- list.files(here::here("data/cropped_data"), pattern = "ppt", full.names = TRUE)
+
+# Process each year
+precip_results <- list()
+for (i in seq_along(ma_ppt)) {
+  year <- gsub(".*_(\\d{4}).*", "\\1", basename(ma_ppt[i]))
+  
+  precip_results[[year]] <- calcAnnualPpt(
+    ppt_file = ma_ppt[i],
+    output_file = paste0("data/annual/annual_precip_", year, "_MA.nc")
+  )
+}
+```
+
+# Plot Precipitation data
+```{r}
+
+```

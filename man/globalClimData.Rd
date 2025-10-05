@@ -16,7 +16,7 @@ Options: "TerraClimate" or "GridMET"}
 \item GridMET: must be >= 1979
 }}
 
-\item{variable}{Character string specifying the climate variable to download.
+\item{variable}{Character vector specifying the climate variable(s) to download.
 Available variables depend on the data source:
 
 \strong{TerraClimate variables:}
@@ -81,10 +81,20 @@ the specified source parameter.
                  variable = "tmmx",
                  save_dir = "~/climate_data")
   
-  # Download to current directory
+  # Download multiple variables for multiple years
   globalClimData(source = "TerraClimate",
-                 years = 2022,
-                 variable = "tmax")
+                 years = c(2018, 2019, 2020), 
+                 variable = c("tmax", "tmin", "ppt"))
+  
+  # Download all temperature-related variables from GridMET
+  globalClimData(source = "GridMET",
+                 years = 2020:2022,
+                 variable = c("tmmx", "tmmn", "rmax", "rmin"))
+  
+  # Download drought indicators from TerraClimate
+  globalClimData(source = "TerraClimate",
+                 years = 2015:2020,
+                 variable = c("def", "PDSI", "soil", "vpd"))
 }
 
 }

@@ -100,7 +100,7 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
   downloaded_files <- character(total_files)
   
   # Print download plan
-  message("\n", strrep("=", 60))
+  message("\n", strrep("=", 80))
   message("Download Plan:")
   message("  Years: ", paste(range(years), collapse = " to "), 
           " (", length(years), " year", ifelse(length(years) > 1, "s", ""), ")")
@@ -108,7 +108,7 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
           " (", length(variable), " variable", ifelse(length(variable) > 1, "s", ""), ")")
   message("  Total files: ", total_files)
   message("  Destination: ", save_dir)
-  message(strrep("=", 60), "\n")
+  message(strrep("=", 80), "\n")
   
   # Download files for each combination
   for (i in seq_len(total_files)) {
@@ -126,7 +126,8 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
         url = file_url,
         destfile = dest_path,
         mode = "wb",
-        quiet = FALSE
+        quiet = FALSE,
+        timeout = 300
       )
       downloaded_files[i] <- dest_path
       message("  -> Success")
@@ -142,7 +143,7 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
   n_success <- sum(!is.na(downloaded_files))
   n_failed <- sum(is.na(downloaded_files))
   
-  message("\n", strrep("=", 60))
+  message("\n", strrep("=", 80))
   message("Download Summary:")
   message("  Successfully downloaded: ", n_success, " file(s)")
   if (n_failed > 0) {
@@ -155,7 +156,7 @@ getTerraClimate.data <- function(years, variable, save_dir = NULL) {
     }
   }
   message("  Location: ", save_dir)
-  message(strrep("=", 60))
+  message(strrep("=", 80))
   
   # Return paths invisibly
   invisible(downloaded_files[!is.na(downloaded_files)])
