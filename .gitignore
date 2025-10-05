@@ -6,8 +6,10 @@
 .quarto
 .Ruserdata
 *.Rproj
-.data
+
 .Example.rmd
-inst/doc
+/.Rbuildignore
 /doc/
 /Meta/
+data
+Kwabena_project.rmd

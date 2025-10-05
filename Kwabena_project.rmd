@@ -1,4 +1,5 @@
 ```{r}
+install.packages(c("devtools", "here", "usethis"))
 devtools::install_github("https://github.com/paudelsushil/globalClimData")
 
 lapply(c("terra", "rnaturalearth", "dplyr", "sf"), library, character.only = TRUE)
@@ -91,5 +92,7 @@ for (i in seq_along(ma_ppt)) {
 
 # Plot Precipitation data
 ```{r}
-
+# Create inst/ directory if it doesn't exist
+dir.create("inst", showWarnings = FALSE)
+usethis::use_citation()
 ```

@@ -1,0 +1,16 @@
+bibentry(
+  bibtype = "Software",
+  title = "globalClimData: Download and Process Global Climate Data",
+  author = "Sushil Paudel,
+  note = "R package version 2.0.0",,
+  year = 2025,
+  version = 2.0.0 ,
+  url = "https://github.com/paudelsushil/globalClimData",
+  doi = "10.5281/zenodo.17271363",
+  textVersion = paste(
+    "Paudel, S. (2025).",
+    "globalClimData: Download and Process Global Climate Data.",
+    "R package version 2.0.0.",
+    "https://doi.org/10.5281/zenodo.17271362"
+  )
+)
