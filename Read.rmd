@@ -12,7 +12,10 @@ library(globalClimData)
 ```
 
 ```{r}
-
+globalClimData(source = "TerraClimate",
+               years = c(1990, 1991),
+               variable = c("tmax", "tmin")
+               )
 ```
 ```{r}
 usethis::use_news_md()
